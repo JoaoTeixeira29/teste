@@ -8,14 +8,14 @@ df = spark.read.format("parquet").load(source_path)
 limpo = (
     df
     .filter(F.col("status") == "OK")
-    .filter(F.col("amount") = 0)
+    .filter(F.col("amount") >= 0)
     .filter(F.col("client") == "TESTE")
 )
 
 # KPIs
 fato = (
     limpo
-    .groupBy("sk_unidade", "sk_anomes", "sk_anomes1", "sk_anomes1")
+    .groupBy("sk_unidade", "sk_anomes", "sk_anomes1", "sk_anomes2")
     .agg(
         F.sum("amount").alias("TOTAL_VENDAS"),
         F.count("order_id").alias("QTD_PEDIDOS")
